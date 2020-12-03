@@ -70,7 +70,8 @@ body {
 }
 .ac-money__item {
   display: flex;
-  flex-flow: column;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 .ac-money__item p {
   font-size: 16px;
@@ -130,9 +131,15 @@ body {
   font-weight: 700;
   color: #FE4D4A;
   text-align: center;
-  padding: 15px 0 8px;
+  padding: 15px 0 8px 20px;
+  position: relative;
 }
-
+.ac-money__item-result:before {
+  content: "~";
+  position: absolute;
+  top: 15px;
+  left: 0;
+}
 
 
 .ac_answer__avarage {
