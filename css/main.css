@@ -84,6 +84,7 @@ body {
 }
 .ac-money__item p {
   font-size: 16px;
+  width: 100%;
 }
   .with_spaces {
     margin-right: 10px;
