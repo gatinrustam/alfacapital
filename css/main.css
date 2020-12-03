@@ -64,14 +64,23 @@ body {
   padding-right: 25px;
 }
 .ac-money {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   padding: 24px 0;
 }
 .ac-money__item {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 .ac-money__item p {
   font-size: 16px;
@@ -90,6 +99,8 @@ body {
     border-radius: 30px;
     border: none;
     cursor: pointer;
+    -webkit-transition: background-color 200ms ease;
+    -o-transition: background-color 200ms ease;
     transition: background-color 200ms ease;
   }
   .abbr:hover {
@@ -104,7 +115,8 @@ body {
     color: #FFFFFF;
     background-color: #FE4D4A;
     max-width: 299px;
-    box-shadow: 0px 9px 10px rgba(254, 77, 74, 0.1);
+    -webkit-box-shadow: 0px 9px 10px rgba(254, 77, 74, 0.1);
+            box-shadow: 0px 9px 10px rgba(254, 77, 74, 0.1);
   }
   .abbr__tooltip a {
     color: #FFFFFF;
@@ -120,7 +132,9 @@ body {
     width: 7px;
     height: 7px;
     background-color: #FE4D4A;
-    transform: translateY(50%) rotate(45deg);
+    -webkit-transform: translateY(50%) rotate(45deg);
+        -ms-transform: translateY(50%) rotate(45deg);
+            transform: translateY(50%) rotate(45deg);
   }
 .ac-coin-svg {
   width: 100%;
@@ -153,6 +167,8 @@ body {
 }
 .show-container {
   display: block;
+  -webkit-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
 }
 
@@ -179,14 +195,23 @@ body {
 
 
 .ac-interval {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   padding: 16px 0;
 }
 .ac-interval__min,
 .ac-interval__max {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   margin: 0 10px;
 }
 .ac-interval__min p,
@@ -218,9 +243,15 @@ body {
 }
 
 .ac-link {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   padding: 25px 0;
 }
 .ac-link span {
@@ -262,9 +293,15 @@ stroke-width: 30;
 
 /* Input range props */
 .ac-range {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   position: relative;
   padding-top: 45px;
 }
@@ -281,7 +318,9 @@ stroke-width: 30;
   width: 76px;
   text-align: center;
   outline: none;
-  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
 }
 .ac-range__tooltip::after {
   content: "";
@@ -293,7 +332,9 @@ stroke-width: 30;
   width: 7px;
   height: 7px;
   background-color: #FE4D4A;
-  transform: translateY(50%) rotate(45deg);
+  -webkit-transform: translateY(50%) rotate(45deg);
+      -ms-transform: translateY(50%) rotate(45deg);
+          transform: translateY(50%) rotate(45deg);
 }
 
 .ac-range__wrapper {
@@ -397,7 +438,10 @@ stroke-width: 30;
     width: calc(100% - 50px);
   }
   .ac-money {
-    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
     text-align: center;
   }
     .with_spaces {
@@ -406,11 +450,17 @@ stroke-width: 30;
     }
 
   .ac-interval {
-    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
   }
 
   .ac-link {
-    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
   }
   .ac-link span {
     margin-right: 0;
