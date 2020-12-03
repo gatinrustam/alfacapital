@@ -18,17 +18,19 @@
 
       <label class="ac-range">
         <span>0&nbsp;₽</span>
-        <input 
-          class="ac-range__input"
-          type="range"
-          min="0"
-          max="50000"
-          step="100"
-          value="0"
-          name="saving"
-        />
+        <div class="ac-range__wrapper">
+          <input 
+            class="ac-range__input"
+            type="range"
+            min="0"
+            max="50000"
+            step="100"
+            value="0"
+            name="saving"
+          />
+          <span class="ac-range__tooltip">0&nbsp;₽</span>
+        </div>
         <span>50&nbsp;000&nbsp;₽</span>
-        <span class="ac-range__tooltip" style="left: calc(0% + 10px);">0&nbsp;₽</span>
       </label>
     </div>
 
@@ -55,6 +57,7 @@
           <div class="ac-money__item with_spaces">
             <img src="images/ac-coin.svg">
             <span class="ac-money__item-result" id="deposit">~366&nbsp;375&nbsp;₽</span>
+            <!-- input:focus + p --> 
             <p>
               если откладывать на&nbsp;депозит 
               <button 
@@ -134,19 +137,14 @@
 
     // В событии обработки инпута изменяется значение тултипа и его положение
     rangeInput.addEventListener('input', (event) => {
-      const targetValue = event.target;
-
+      const { value, min, max } = event.target;
       // В зависимости от min/max расчитываем положение в процентах от 0 до 100
-      const newValue = Number((targetValue.value - targetValue.min) * 100 / (targetValue.max - targetValue.min));
-      // 1.48 - магическое число подобрал вручную
-      const newPosition = 10 - (newValue * 1.48);
+      const percentOffset = (value - min) / (max - min) * 100;
 
-      rangeTooltip.innerHTML = `${getNumberWithSpace(targetValue.value)} ₽`;
-      rangeTooltip.style.left = `calc(${newValue}% + (${newPosition}px))`;
+      
+      rangeTooltip.innerHTML = getNumberWithSpace(value);
+      rangeTooltip.style.left = `${percentOffset}%`;
     });
-
-    
-
 
     // Обрабатываем инпут для подстановки значений в поля
     const DEPOSITCOEF = 1.0698; // под 6,98% годовых
@@ -184,26 +182,26 @@
 
     // Событие для инпута
     rangeInput.addEventListener('change', (event) => {
-      let rangeValue = event.target.value;
+      const value = Number(event.target.value);
 
       // Подставляем расчитанные значения в контейнеры
-      result.title.innerHTML = `Вы откладываете ${getNumberWithSpace(rangeValue)} ₽ в месяц.<br>За три года вы бы заработали:`;
-      result.mattress.innerHTML = `~${getSum(rangeValue)} ₽`;
-      result.deposit.innerHTML = `~${getSum(rangeValue, DEPOSITCOEF)} ₽`;
-      result.invest.innerHTML = `~${getSum(rangeValue, INVESTCOEF)} ₽`;
+      result.title.innerHTML = `Вы откладываете ${getNumberWithSpace(value)} в месяц.<br>За три года вы бы заработали:`;
+      result.mattress.textContent = `~${getSum(value, 36)}`;
+      result.deposit.textContent = `~${getSum(value, 36, DEPOSITCOEF)}`;
+      result.invest.textContent = `~${getSum(value, 36, INVESTCOEF)}`;
 
       // Через таймер answerContainer становиться display: block
       // И "мягко" скроллится
-      setTimeout(() => {
-        answerContainer.classList.toggle('show-container');
+      // setTimeout(() => {
+        answerContainer.classList.add('show-container');
         answerContainer.scrollIntoView({ behavior: 'smooth' });
 
         // Пушим значение инпута от пользователя
-        data.push(Number(rangeValue));
+        data.push(value);
 
         // Расчитываем среднюю сумму и подставляем в контейнер
-        const mean = data.reduce((sum, item) => (sum + item) / data.length);
-        avarageAmount.innerHTML = `~${getNumberWithSpace(mean.toFixed())} ₽`;
+        const mean = data.reduce((sum, item) => (sum + item), 0) / data.length;
+        avarageAmount.textContent = `~${getNumberWithSpace(mean)}`;
 
         // Подставляем нужную картинку в зависимости от средней суммы
         const getImage = getImageMoney(mean);
@@ -213,7 +211,7 @@
         // 
 
         console.log(data, mean);
-      }, 1000);
+      // }, 1000);
 
     });
 
@@ -240,11 +238,8 @@
     // Если не указан коэфициент - отдаем сумму * 36 месяцев
     // Иначе возвращаем сумму за 36 месяцев + проценты
     // TODO: расчет под 6.9% годовых должен расчитываться за каждый год, а не за 3 сразу
-    function getSum(value, factor){
-      if (factor) {
-        return getNumberWithSpace((value * 36 * factor).toFixed());
-      }
-      return getNumberWithSpace((value * 36).toFixed());
+    function getSum(value, term, factor = 1){
+      return getNumberWithSpace(value * term * factor);
     }
 
     // Расчитываем шаг для добавления монеток
@@ -254,33 +249,28 @@
 
     // Принимает сумму, возвращает название картинки соответствующей сумме
     const imageList = [
-      "ac-money-01.svg", 
-      "ac-money-02.svg", 
-      "ac-money-03.svg", 
-      "ac-money-04.svg", 
-      "ac-money-05.svg"
+      "ac-money-0.svg", 
+      "ac-money-1.svg", 
+      "ac-money-2.svg", 
+      "ac-money-3.svg", 
+      "ac-money-4.svg"
     ]
 
     function getImageMoney(number){
-      if (number >= 10000 && number < 20000) {
-        return imageList[1];
-      }
-      if (number >= 20000 && number < 30000) {
-        return imageList[2];
-      }
-      if (number >= 30000 && number < 40000) {
-        return imageList[3];
-      }
-      if (number >= 40000 && number <= 50000) {
-        return imageList[4];
-      }
-        
-      return imageList[0];
+      const imageId = Math.floor(number / 10000);
+      return `ac-money-${imageId}.svg`;
     }
+
+    const currencyFormatter = new Intl.NumberFormat('ru-RU', {
+      style: 'currency',
+      currency: 'RUB',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,      
+    });
 
     // Расставляет пробелы в числах
     function getNumberWithSpace(number){
-      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+      return currencyFormatter.format(number);
     }
 
 
@@ -299,6 +289,8 @@
     // Управление подсказками
     // TODO: заменить события на click
     let tooltipElem;
+
+    
 
     document.onmouseover = function(event) {
       const target = event.target;
